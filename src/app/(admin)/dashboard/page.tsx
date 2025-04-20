@@ -37,65 +37,87 @@ function DashboardPage() {
   const groupedInterviews = groupInterviews(interviews);
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex items-center mb-8">
+    <div className="container mx-auto py-10 min-h-screen relative">
+      {/* Premium Background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#18181855_1px,transparent_1px),linear-gradient(to_bottom,#18181855_1px,transparent_1px)]" />
+        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-primary/20 dark:bg-primary/10 blur-[100px]" />
+      </div>
+
+      <div className="flex items-center mb-12 justify-between">
+        <div className="space-y-2">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            Interview Dashboard
+          </h1>
+          <p className="text-zinc-600 dark:text-zinc-300 text-lg">
+            Monitor and manage your interview pipeline
+          </p>
+        </div>
         <Link href="/schedule">
-          <Button>Schedule New Interview</Button>
+          <Button className="bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 text-white shadow-lg transition-all duration-300">
+            Schedule New Interview
+          </Button>
         </Link>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-12">
         {INTERVIEW_CATEGORY.map(
           (category) =>
             groupedInterviews[category.id]?.length > 0 && (
-              <section key={category.id}>
-                {/* CATEGORY TITLE */}
-                <div className="flex items-center gap-2 mb-4">
-                  <h2 className="text-xl font-semibold">{category.title}</h2>
-                  <Badge variant={category.variant}>{groupedInterviews[category.id].length}</Badge>
+              <section key={category.id} className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-3xl font-semibold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                    {category.title}
+                  </h2>
+                  <Badge variant={category.variant} className="px-3 py-1 text-sm font-medium">
+                    {groupedInterviews[category.id].length}
+                  </Badge>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {groupedInterviews[category.id].map((interview: Interview) => {
                     const candidateInfo = getCandidateInfo(users, interview.candidateId);
                     const startTime = new Date(interview.startTime);
 
                     return (
-                      <Card className="hover:shadow-md transition-all">
-                        {/* CANDIDATE INFO */}
-                        <CardHeader className="p-4">
-                          <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
+                      <Card className="group hover:shadow-xl transition-all duration-500 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm bg-white/50 dark:bg-black/50">
+                        <CardHeader className="p-6">
+                          <div className="flex items-center gap-4">
+                            <Avatar className="h-14 w-14 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
                               <AvatarImage src={candidateInfo.image} />
-                              <AvatarFallback>{candidateInfo.initials}</AvatarFallback>
+                              <AvatarFallback className="bg-primary/10 text-primary">
+                                {candidateInfo.initials}
+                              </AvatarFallback>
                             </Avatar>
                             <div>
-                              <CardTitle className="text-base">{candidateInfo.name}</CardTitle>
-                              <p className="text-sm text-muted-foreground">{interview.title}</p>
+                              <CardTitle className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">
+                                {candidateInfo.name}
+                              </CardTitle>
+                              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                                {interview.title}
+                              </p>
                             </div>
                           </div>
                         </CardHeader>
 
-                        {/* DATE &  TIME */}
-                        <CardContent className="p-4">
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <CalendarIcon className="h-4 w-4" />
+                        <CardContent className="px-6 pb-6">
+                          <div className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+                            <div className="flex items-center gap-2">
+                              <CalendarIcon className="h-5 w-5 text-primary/70" />
                               {format(startTime, "MMM dd")}
                             </div>
-                            <div className="flex items-center gap-1">
-                              <ClockIcon className="h-4 w-4" />
+                            <div className="flex items-center gap-2">
+                              <ClockIcon className="h-5 w-5 text-primary/70" />
                               {format(startTime, "hh:mm a")}
                             </div>
                           </div>
                         </CardContent>
 
-                        {/* PASS & FAIL BUTTONS */}
-                        <CardFooter className="p-4 pt-0 flex flex-col gap-3">
+                        <CardFooter className="px-6 pb-6 pt-0 flex flex-col gap-3">
                           {interview.status === "completed" && (
-                            <div className="flex gap-2 w-full">
+                            <div className="flex gap-3 w-full">
                               <Button
-                                className="flex-1"
+                                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg transition-all duration-300"
                                 onClick={() => handleStatusUpdate(interview._id, "succeeded")}
                               >
                                 <CheckCircle2Icon className="h-4 w-4 mr-2" />
@@ -103,7 +125,7 @@ function DashboardPage() {
                               </Button>
                               <Button
                                 variant="destructive"
-                                className="flex-1"
+                                className="flex-1 shadow-lg transition-all duration-300"
                                 onClick={() => handleStatusUpdate(interview._id, "failed")}
                               >
                                 <XCircleIcon className="h-4 w-4 mr-2" />

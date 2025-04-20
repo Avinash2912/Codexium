@@ -11,10 +11,12 @@ import MeetingModal from "@/components/MeetingModal";
 import LoaderUI from "@/components/LoaderUI";
 import { Loader2Icon } from "lucide-react";
 import MeetingCard from "@/components/MeetingCard";
+import { motion } from "framer-motion";
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
   const router = useRouter();
-
+  const { user } = useUser();  // Move this line here
   const { isInterviewer, isCandidate, isLoading } = useUserRole();
   const interviews = useQuery(api.interviews.getMyInterviews);
   const [showModal, setShowModal] = useState(false);
@@ -38,30 +40,51 @@ export default function Home() {
   if (isLoading) return <LoaderUI />;
 
   return (
-    <div className="container max-w-7xl mx-auto p-6">
+    <div className="container max-w-7xl mx-auto p-6 relative min-h-screen">
+      {/* Modern Background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#18181855_1px,transparent_1px),linear-gradient(to_bottom,#18181855_1px,transparent_1px)]" />
+        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-primary/20 dark:bg-primary/10 blur-[100px]" />
+      </div>
+
       {/* WELCOME SECTION */}
-      <div className="rounded-lg bg-card p-6 border shadow-sm mb-10">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-          Welcome back!
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="rounded-2xl bg-white/50 dark:bg-black/50 backdrop-blur-xl p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl mb-12"
+      >
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          Welcome back, {user?.firstName || 'Guest'}!
         </h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-zinc-600 dark:text-zinc-300 mt-4 text-lg">
           {isInterviewer
             ? "Manage your interviews and review candidates effectively"
             : "Access your upcoming interviews and preparations"}
         </p>
-      </div>
+      </motion.div>
 
       {isInterviewer ? (
         <>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {QUICK_ACTIONS.map((action) => (
-              <ActionCard
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {QUICK_ACTIONS.map((action, index) => (
+              <motion.div
                 key={action.title}
-                action={action}
-                onClick={() => handleQuickAction(action.title)}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
+                className="backdrop-blur-sm"
+              >
+                <ActionCard action={action} onClick={() => handleQuickAction(action.title)} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <MeetingModal
             isOpen={showModal}
@@ -72,28 +95,54 @@ export default function Home() {
         </>
       ) : (
         <>
-          <div>
-            <h1 className="text-3xl font-bold">Your Interviews</h1>
-            <p className="text-muted-foreground mt-1">View and join your scheduled interviews</p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+              Your Interviews
+            </h1>
+            <p className="text-zinc-600 dark:text-zinc-300 mt-2 text-lg">
+              View and join your scheduled interviews
+            </p>
+          </motion.div>
 
-          <div className="mt-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mt-8"
+          >
             {interviews === undefined ? (
               <div className="flex justify-center py-12">
-                <Loader2Icon className="h-8 w-8 animate-spin text-muted-foreground" />
+                <Loader2Icon className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : interviews.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {interviews.map((interview) => (
-                  <MeetingCard key={interview._id} interview={interview} />
+                {interviews.map((interview, index) => (
+                  <motion.div
+                    key={interview._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index, duration: 0.5 }}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <MeetingCard interview={interview} />
+                  </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 text-muted-foreground">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-center py-12 text-zinc-600 dark:text-zinc-300 text-lg"
+              >
                 You have no scheduled interviews at the moment
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         </>
       )}
     </div>
