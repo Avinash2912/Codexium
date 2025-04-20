@@ -41,27 +41,32 @@ export default function Home() {
 
   return (
     <div className="container max-w-7xl mx-auto p-6 relative min-h-screen">
-      {/* Modern Background */}
+      {/* Premium Background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#18181855_1px,transparent_1px),linear-gradient(to_bottom,#18181855_1px,transparent_1px)]" />
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-primary/20 dark:bg-primary/10 blur-[100px]" />
+        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-gradient-to-br from-primary/30 via-purple-500/20 to-pink-500/30 blur-[100px]" />
       </div>
 
-      {/* WELCOME SECTION */}
+      {/* Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="rounded-2xl bg-white/50 dark:bg-black/50 backdrop-blur-xl p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl mb-12"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Welcome back, {user?.firstName || 'Guest'}!
-        </h1>
-        <p className="text-zinc-600 dark:text-zinc-300 mt-4 text-lg">
-          {isInterviewer
-            ? "Manage your interviews and review candidates effectively"
-            : "Access your upcoming interviews and preparations"}
-        </p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-3">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Welcome back, {user?.firstName || 'Guest'}!
+            </h1>
+            <p className="text-zinc-600 dark:text-zinc-300 text-lg">
+              {isInterviewer
+                ? "Manage your interviews and review candidates effectively"
+                : "Access your upcoming interviews and preparations"}
+            </p>
+          </div>
+          <div className="hidden md:block w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 backdrop-blur-xl animate-pulse" />
+        </div>
       </motion.div>
 
       {isInterviewer ? (
@@ -85,13 +90,6 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
-
-          <MeetingModal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-            title={modalType === "join" ? "Join Meeting" : "Start Meeting"}
-            isJoinMeeting={modalType === "join"}
-          />
         </>
       ) : (
         <>
@@ -99,24 +97,21 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            className="rounded-2xl bg-white/50 dark:bg-black/50 backdrop-blur-xl p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl"
           >
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent mb-4">
               Your Interviews
             </h1>
-            <p className="text-zinc-600 dark:text-zinc-300 mt-2 text-lg">
+            <p className="text-zinc-600 dark:text-zinc-300 text-lg mb-8">
               View and join your scheduled interviews
             </p>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="mt-8"
-          >
             {interviews === undefined ? (
-              <div className="flex justify-center py-12">
-                <Loader2Icon className="h-8 w-8 animate-spin text-primary" />
+              <div className="flex justify-center items-center min-h-[300px]">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full blur-xl bg-primary/20" />
+                  <Loader2Icon className="size-12 animate-spin text-primary relative" />
+                </div>
               </div>
             ) : interviews.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -127,6 +122,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 * index, duration: 0.5 }}
                     whileHover={{ scale: 1.02 }}
+                    className="backdrop-blur-sm"
                   >
                     <MeetingCard interview={interview} />
                   </motion.div>
@@ -137,14 +133,29 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-center py-12 text-zinc-600 dark:text-zinc-300 text-lg"
+                className="flex flex-col items-center justify-center min-h-[300px] gap-4"
               >
-                You have no scheduled interviews at the moment
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full blur-3xl bg-primary/20" />
+                  <p className="text-2xl font-medium text-zinc-600 dark:text-zinc-300 relative">
+                    No interviews scheduled
+                  </p>
+                </div>
+                <p className="text-zinc-500 dark:text-zinc-400">
+                  Your upcoming interviews will appear here
+                </p>
               </motion.div>
             )}
           </motion.div>
         </>
       )}
+
+      <MeetingModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        title={modalType === "join" ? "Join Meeting" : "Start Meeting"}
+        isJoinMeeting={modalType === "join"}
+      />
     </div>
   );
 }
