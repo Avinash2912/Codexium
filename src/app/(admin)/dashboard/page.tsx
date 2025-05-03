@@ -38,35 +38,25 @@ function DashboardPage() {
 
   return (
     <div className="container mx-auto py-10 min-h-screen relative">
-      {/* Premium Background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#18181855_1px,transparent_1px),linear-gradient(to_bottom,#18181855_1px,transparent_1px)]" />
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-primary/20 dark:bg-primary/10 blur-[100px]" />
-      </div>
-
-      <div className="flex items-center mb-12 justify-between">
-        <div className="space-y-2">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Interview Dashboard
-          </h1>
-          <p className="text-zinc-600 dark:text-zinc-300 text-lg">
-            Monitor and manage your interview pipeline
-          </p>
-        </div>
+      {/* HEADER */}
+      <header className="text-center py-10 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold">Interview Dashboard</h1>
+        <p className="mt-2 text-lg">Monitor and manage your interview pipeline</p>
         <Link href="/schedule">
-          <Button className="bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 text-white shadow-lg transition-all duration-300">
+          <Button className="mt-4 bg-white text-blue-500 hover:bg-gray-100">
             Schedule New Interview
           </Button>
         </Link>
-      </div>
+      </header>
 
-      <div className="space-y-12">
+      {/* INTERVIEW CATEGORIES */}
+      <div className="space-y-12 mt-10">
         {INTERVIEW_CATEGORY.map(
           (category) =>
             groupedInterviews[category.id]?.length > 0 && (
               <section key={category.id} className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-3xl font-semibold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                  <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
                     {category.title}
                   </h2>
                   <Badge variant={category.variant} className="px-3 py-1 text-sm font-medium">
@@ -80,20 +70,23 @@ function DashboardPage() {
                     const startTime = new Date(interview.startTime);
 
                     return (
-                      <Card className="group hover:shadow-xl transition-all duration-500 rounded-xl border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm bg-white/50 dark:bg-black/50">
+                      <Card
+                        key={interview._id}
+                        className="group hover:shadow-xl transition-all duration-500 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+                      >
                         <CardHeader className="p-6">
                           <div className="flex items-center gap-4">
-                            <Avatar className="h-14 w-14 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300">
+                            <Avatar className="h-14 w-14 ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all duration-300">
                               <AvatarImage src={candidateInfo.image} />
-                              <AvatarFallback className="bg-primary/10 text-primary">
+                              <AvatarFallback className="bg-blue-500/10 text-blue-500">
                                 {candidateInfo.initials}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <CardTitle className="text-xl font-semibold group-hover:text-primary transition-colors duration-300">
+                              <CardTitle className="text-xl font-semibold group-hover:text-blue-500 transition-colors duration-300">
                                 {candidateInfo.name}
                               </CardTitle>
-                              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
                                 {interview.title}
                               </p>
                             </div>
@@ -101,13 +94,13 @@ function DashboardPage() {
                         </CardHeader>
 
                         <CardContent className="px-6 pb-6">
-                          <div className="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+                          <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
                             <div className="flex items-center gap-2">
-                              <CalendarIcon className="h-5 w-5 text-primary/70" />
+                              <CalendarIcon className="h-5 w-5 text-blue-500/70" />
                               {format(startTime, "MMM dd")}
                             </div>
                             <div className="flex items-center gap-2">
-                              <ClockIcon className="h-5 w-5 text-primary/70" />
+                              <ClockIcon className="h-5 w-5 text-blue-500/70" />
                               {format(startTime, "hh:mm a")}
                             </div>
                           </div>
@@ -117,7 +110,7 @@ function DashboardPage() {
                           {interview.status === "completed" && (
                             <div className="flex gap-3 w-full">
                               <Button
-                                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg transition-all duration-300"
+                                className="flex-1 bg-green-500 hover:bg-green-600 text-white shadow-lg transition-all duration-300"
                                 onClick={() => handleStatusUpdate(interview._id, "succeeded")}
                               >
                                 <CheckCircle2Icon className="h-4 w-4 mr-2" />
@@ -146,4 +139,5 @@ function DashboardPage() {
     </div>
   );
 }
+
 export default DashboardPage;

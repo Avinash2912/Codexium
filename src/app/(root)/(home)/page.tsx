@@ -43,7 +43,7 @@ export default function Home() {
     <div className="container max-w-10xl mx-auto p-6 relative min-h-screen">
       {/* Premium Background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-300 via-blue-800/80 to-blue-500 dark:from-blue-550 dark:via-blue-900/20 dark:to-blue-850" />
+        <div className="absolute inset-0 bg-gradient-to-br from-red-800 via-blue-600/80 to-blue-500 dark:from-blue-550 dark:via-blue-900/20 dark:to-blue-850" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] opacity-50" />
       </div>
 

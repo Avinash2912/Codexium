@@ -168,11 +168,11 @@ function InterviewScheduleUI() {
         className="flex flex-col gap-6"
       >
         {/* HEADER INFO */}
-        <div className="rounded-2xl bg-white/50 dark:bg-black/50 backdrop-blur-xl p-8 border border-zinc-200/50 dark:border-zinc-800/50 shadow-xl">
+        <div className="rounded-2xl bg-green/50 dark:bg-red-900 backdrop-blur-xl p-8 border border-zinc-200/50 dark:border-blue-800/50 shadow-xl">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
             <div className="space-y-2">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                Interview Hub
+              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary  text-white bg-clip-text text-transparent">
+                Codexium
               </h1>
               <p className="text-zinc-600 dark:text-zinc-300 text-lg">
                 Streamline your interview process
@@ -204,7 +204,7 @@ function InterviewScheduleUI() {
 
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                  <Button size="lg" className="bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 text-white shadow-lg">
+                  <Button size="lg" className="bg-blue-500 hover:bg-blue-800 text-white shadow-lg">
                     Schedule Interview
                   </Button>
                 </DialogTrigger>
@@ -402,3 +402,7 @@ function InterviewScheduleUI() {
   );
 }
 export default InterviewScheduleUI;
+
+
+
+
