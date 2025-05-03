@@ -22,7 +22,7 @@ function DasboardBtn() {
           className="gap-2 font-medium bg-[#1E1E1E] hover:bg-[#2A2A2A] text-zinc-300 border border-[#313131] shadow-lg transition-all duration-200"
           size={"sm"}
         >
-          <SparklesIcon className="size-4 text-[#2CBB5D]" />
+          <SparklesIcon className="size-8 text-[#2CBB5D]" />
           <span>Dashboard</span>
         </Button>
       </motion.div>
